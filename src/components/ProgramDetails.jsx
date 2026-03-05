@@ -1,26 +1,32 @@
-import React from "react";
-
-function ProgramDetails({ program, onClose }) {
-  if (!program) return null;
+export default function ProgramDetails({ program, back }) {
 
   return (
-    <div className="card" style={{ marginTop: "20px" }}>
-      <h3>{program.code} - {program.name}</h3>
-      <p><strong>Type:</strong> {program.type}</p>
-      <p><strong>Duration:</strong> {program.duration}</p>
-      <p><strong>Total Units:</strong> {program.totalUnits}</p>
-      <p><strong>Status:</strong> {program.status}</p>
-      <h4>Year Levels & Subjects:</h4>
-      <ul>
-        {Object.entries(program.yearLevels).map(([year, subjects]) => (
-          <li key={year}>
-            <strong>{year}:</strong> {subjects.length ? subjects.join(", ") : "No subjects"}
-          </li>
-        ))}
-      </ul>
-      <button onClick={onClose}>Close</button>
+    <div className="details">
+
+      <button onClick={back}>Back</button>
+
+      <h2>{program.name}</h2>
+
+      <p><b>Code:</b> {program.code}</p>
+      <p><b>Duration:</b> {program.duration}</p>
+      <p><b>Total Units:</b> {program.totalUnits}</p>
+      <p><b>Status:</b> {program.status}</p>
+
+      <p>{program.description}</p>
+
+      <h3>Year Levels</h3>
+
+      {Object.entries(program.years).map(([year, subjects]) => (
+        <div key={year}>
+          <h4>{year}</h4>
+          <ul>
+            {subjects.map(sub => (
+              <li key={sub}>{sub}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
+
     </div>
   );
 }
-
-export default ProgramDetails;

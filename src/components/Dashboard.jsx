@@ -1,126 +1,64 @@
-console.log("Programs data:", programs);
-console.log("Subjects data:", subjects);
+import programs from "../data/programs";
+import subjects from "../data/subjects";
 
-import React from "react";
-import { programs } from "../data/programs";
-import { subjects } from "../data/subjects";
-
-// Chart imports
-import { Bar } from "react-chartjs-2";
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-} from "chart.js";
+  PieChart, Pie, Cell, Tooltip,
+  BarChart, Bar, XAxis, YAxis
+} from "recharts";
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+export default function Dashboard() {
 
-function Dashboard() {
+  const activePrograms = programs.filter(p => p.status==="Active").length;
+  const inactivePrograms = programs.length - activePrograms;
 
-  // Total programs
-  const totalPrograms = programs.length;
+  const programData = [
+    {name:"Active", value:activePrograms},
+    {name:"Inactive", value:inactivePrograms}
+  ];
 
-  // Total subjects
-  const totalSubjects = subjects.length;
+  const subjectData = [
+    {name:"Subjects", total:subjects.length}
+  ];
 
-  // Active / Inactive programs
-  const activePrograms = programs.filter(p => p.status.toLowerCase() === "active").length;
-  const inactivePrograms = programs.filter(p => p.status.toLowerCase() !== "active").length;
-
-  // Subjects with prerequisites
-  const subjectsWithPrereq = subjects.filter(s => s.preRequisites && s.preRequisites.length > 0).length;
-
-  // Subjects per semester
-  const semesterCounts = subjects.reduce((acc, subj) => {
-    acc[subj.semester] = (acc[subj.semester] || 0) + 1;
-    return acc;
-  }, {});
-
-  const chartData = {
-    labels: Object.keys(semesterCounts),
-    datasets: [
-      {
-        label: "Subjects per Semester",
-        data: Object.values(semesterCounts),
-        backgroundColor: "#646cff"
-      }
-    ]
-  };
-
-  const chartOptions = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top"
-      },
-      title: {
-        display: true,
-        text: "Subjects per Semester"
-      }
-    }
-  };
+  const COLORS = ["#00C49F","#FF8042"];
 
   return (
-    <div className="container">
-      <h2>Dashboard</h2>
+    <div className="dashboard-wrapper">
+      <div className="dashboard">
 
-      <div className="cards-container">
-        {/* Total Programs */}
         <div className="card">
           <h3>Total Programs</h3>
-          <p>{totalPrograms}</p>
+          <p>{programs.length}</p>
         </div>
 
-        {/* Total Subjects */}
         <div className="card">
           <h3>Total Subjects</h3>
-          <p>{totalSubjects}</p>
+          <p>{subjects.length}</p>
         </div>
 
-        {/* Active Programs */}
         <div className="card">
-          <h3>Active Programs</h3>
-          <p>
-            <span className="badge" style={{ backgroundColor: "green", color: "white", padding: "5px 10px", borderRadius: "8px" }}>
-              {activePrograms}
-            </span>{" "}
-            / {totalPrograms}
-          </p>
+          <h3>Programs Status</h3>
+          <PieChart width={200} height={200}>
+            <Pie data={programData} dataKey="value" outerRadius={70}>
+              {programData.map((entry,index)=>(
+                <Cell key={index} fill={COLORS[index]} />
+              ))}
+            </Pie>
+            <Tooltip />
+          </PieChart>
         </div>
 
-        {/* Inactive Programs */}
         <div className="card">
-          <h3>Inactive Programs</h3>
-          <p>
-            <span className="badge" style={{ backgroundColor: "red", color: "white", padding: "5px 10px", borderRadius: "8px" }}>
-              {inactivePrograms}
-            </span>{" "}
-            / {totalPrograms}
-          </p>
+          <h3>Subjects Count</h3>
+          <BarChart width={250} height={200} data={subjectData}>
+            <XAxis dataKey="name"/>
+            <YAxis/>
+            <Tooltip/>
+            <Bar dataKey="total" fill="#8884d8"/>
+          </BarChart>
         </div>
 
-        {/* Subjects with Prerequisites */}
-        <div className="card">
-          <h3>Subjects with Prerequisites</h3>
-          <p>
-            <span className="badge" style={{ backgroundColor: "#646cff", color: "white", padding: "5px 10px", borderRadius: "8px" }}>
-              {subjectsWithPrereq}
-            </span>{" "}
-            / {totalSubjects}
-          </p>
-        </div>
-      </div>
-
-      {/* Bar Chart for Subjects per Semester */}
-      <div className="card" style={{ marginTop: "30px" }}>
-        <Bar data={chartData} options={chartOptions} />
       </div>
     </div>
   );
 }
-
-export default Dashboard;

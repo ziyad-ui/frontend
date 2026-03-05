@@ -1,15 +1,13 @@
-import React from "react";
-
-function ProgramCard({ program, onClick }) {
+export default function ProgramCard({ program, onSelect }) {
   return (
-    <div className="card" onClick={() => onClick(program)}>
-      <h4>{program.code} - {program.name}</h4>
-      <p>Type: {program.type}</p>
+    <div className="program-card" onClick={() => onSelect(program)}>
+      <h3>{program.code}</h3>
+      <p>{program.name}</p>
+
+      <span>{program.type}</span>
+      <span>{program.duration}</span>
+
       <p>Status: {program.status}</p>
-      <p>Duration: {program.duration}</p>
-      <p>Total Units: {program.totalUnits}</p>
     </div>
   );
 }
-
-export default ProgramCard;

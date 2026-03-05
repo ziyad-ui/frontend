@@ -1,32 +1,34 @@
-export const subjects = [
+const subjects = [
   {
     code: "IT101",
     title: "Introduction to IT",
     units: 3,
-    semester: "1st Semester",
+    semester: "Semester",
     program: "BSIT",
-    preRequisites: [],
-    coRequisites: [],
-    description: "Learn the basics of information technology."
+    prerequisites: "None",
+    corequisites: "None",
+    description: "Basic introduction to IT systems."
   },
   {
-    code: "IT102",
-    title: "Computer Fundamentals",
-    units: 4,
-    semester: "1st Semester",
+    code: "IT201",
+    title: "Database Systems",
+    units: 3,
+    semester: "Term",
     program: "BSIT",
-    preRequisites: ["IT101"],
-    coRequisites: [],
-    description: "Learn computer fundamentals."
+    prerequisites: "IT101",
+    corequisites: "None",
+    description: "Introduction to databases."
   },
   {
     code: "CS101",
-    title: "Introduction to CS",
+    title: "Programming Fundamentals",
     units: 3,
-    semester: "2nd Semester",
+    semester: "Both",
     program: "BSCS",
-    preRequisites: [],
-    coRequisites: [],
-    description: "Learn the basics of computer science."
+    prerequisites: "None",
+    corequisites: "None",
+    description: "Learn programming basics."
   }
 ];
+
+export default subjects;
